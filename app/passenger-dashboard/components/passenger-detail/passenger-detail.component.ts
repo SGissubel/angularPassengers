@@ -19,7 +19,7 @@ import { Passenger } from '../../models/passenger.inferface';
 				<div *ngIf="!editing"> 	
 					{{detail.fullname}}
 				</div>
-			<p>{{ detail | json }}</p>
+			
 			<div class="date">
 				Check in date: 
 				{{ detail.checkedInDate ? ( detail.checkedInDate | date: 'yMMMMd' | uppercase ) : 'Not Checked in'}}
@@ -54,7 +54,6 @@ export class PassengerDetailComponent implements OnChanges {
 		if (changes.detail) {
 			this.detail = Object.assign({}, changes.detail.currentValue);
 		}
-		console.log(this.detail);
 	}
 
 	onNameChange(value: string) {

@@ -6,6 +6,8 @@ import { PassengerDashboardModule } from './passenger-dashboard/passenger-dashbo
 
 import { AppComponent } from './app.component';
 
+import { HttpClientModule } from '@angular/common/http';
+
 // broswer and common included in base ngmodule
 
 @NgModule({
@@ -16,6 +18,7 @@ import { AppComponent } from './app.component';
 		//angular modules
 		BrowserModule,
 		CommonModule,
+		HttpClientModule,
 		//custom module
 		PassengerDashboardModule
 	],
