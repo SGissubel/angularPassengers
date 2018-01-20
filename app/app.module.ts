@@ -1,24 +1,35 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Routes } from '@angular/router';
 
 import { PassengerDashboardModule } from './passenger-dashboard/passenger-dashboard.module';
 
+import { HomeComponent } from './home.component';
+
+import { NotFoundComponent } from './not-found.component';
+
 import { AppComponent } from './app.component';
 
-import { HttpClientModule } from '@angular/common/http';
 
+const routes: Routes = [
+	{ path: '', component: HomeComponent, pathMatch: 'full' },
+	{ path: '**', component: NotFoundComponent},
+];
 // broswer and common included in base ngmodule
 
 @NgModule({
 	declarations: [
-		AppComponent
+		AppComponent,
+		HomeComponent,
+		NotFoundComponent
 	],
 	imports: [
 		//angular modules
 		BrowserModule,
 		CommonModule,
-		HttpClientModule,
+		RouterModule.forRoot(routes),
+
 		//custom module
 		PassengerDashboardModule
 	],
