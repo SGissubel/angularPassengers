@@ -18,15 +18,14 @@ export class PassengerDashboardService {
 	constructor(private http: Http) { }
 
 	getPassengers(): Observable<Passenger[]> {
-		console.log('hello');
+		console.log('passenger get')
 		return this.http
 			.get(PASSENGER_API)
-			.map((response: Response) => response.json())
+			.map((response: Response) =>  response.json())
 			.catch((error: any) => Observable.throw(error.json));
 
 	}
 	getPassenger(id: number): Observable<Passenger> {
-		console.log('hello');
 		return this.http
 			.get(`${PASSENGER_API}/${id}`)
 			.map((response: Response) => response.json())

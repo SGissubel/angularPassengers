@@ -1,4 +1,5 @@
 import { Component, OnInit  } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { PassengerDashboardService } from '../../passenger-dashboard.service';
 
@@ -15,53 +16,39 @@ import { Passenger } from '../../models/passenger.inferface';
 			<div *ngFor="let passenger of passengers;">
 				{{ passenger.fullname }}
 			</div>
-
 			<passenger-detail
 				*ngFor="let passenger of passengers;"
 				[detail]="passenger"
+				(view)="handleView($event)"
 				(edit)="handleEdit($event)"
 				(remove)="handleRemove($event)">
 			</passenger-detail>
 			<hr>
 		</div>
 	`
-			// <ul>
-		// 	<template  ngFor let-passenger of passengers let-i = "index" [ngForOf]="passengers">
-		// 		<li>
-		// 			{{ i + 1 }}: {{passenger.fullname}}
-		// 		</li>
-		// 	</template>		
-		// </ul>
-
-
-
-		// <button (click)="handleClick(username.value)">
-		// 	Get Value
-		// </button>
-
-		// <template [ngIf]="name.length">
-		// 	templating ngif (same as *)
-		// </template>
-
-		// <input type="text" #username>
-		// <div *ngIf="name.length">
-		// 	Searching for... {{ name }}
-		// </div>
 })
 export class PassengerDashboardComponent implements OnInit {
 	passengers: Passenger[];
-	constructor(private passengerService: PassengerDashboardService) {}
+	passenger: Passenger;
+	constructor(
+		private router: Router,
+		private passengerService: PassengerDashboardService
+		) {}
 
 	ngOnInit()  {
 		this.passengerService
 			.getPassengers()
-			.map((data: Passenger[]) => {this.passengers = data});
+			.subscribe((data: Passenger[]) => this.passengers = data);
+
+		this.passengerService
+			.getPassenger(1)
+			.map((data: Passenger) => this.passenger = data);
 	}
 
 	handleEdit(event: Passenger) {
 		this.passengerService
 			.updatePassenger(event)
-			.map((data: Passenger) => {
+			.subscribe((data: Passenger) => {
 				this.passengers = this.passengers.map((passenger: Passenger) => {
 				if (passenger.id === event.id) {
 					passenger = Object.assign({}, passenger, event);
@@ -75,12 +62,14 @@ export class PassengerDashboardComponent implements OnInit {
 	handleRemove(event: Passenger) {
 		this.passengerService
 			.removePassenger(event)
-			.map((data: Passenger) => {
+			.subscribe((data: Passenger) => {
 				this.passengers = this.passengers.filter((passenger: Passenger) => {
 					return passenger.id !== event.id;
 				})				
 			})
 	}
 
-	
+	handleView(event: Passenger) {
+		this.router.navigate(['/passengers', event.id])
+	}
 }
